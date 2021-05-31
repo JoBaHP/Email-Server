@@ -5,7 +5,24 @@ require("dotenv").config();
 const nodemailer = require("nodemailer");
 
 const app = express();
-app.use(cors());
+const whitelist = [
+  "http://build-up.digital",
+  "https://build-up.digital",
+  "http://build-up.digital/contact",
+  "https://build-up.digital/contact",
+];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+
+// Then pass them to cors:
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/", router);
 
