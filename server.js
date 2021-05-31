@@ -4,6 +4,18 @@ const cors = require("cors");
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 
+const app = express();
+app.use(cors(), function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+app.use(express.json());
+app.use("/", router);
+
 const contactEmail = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
   port: process.env.EMAIL_PORT,
@@ -45,8 +57,4 @@ router.post("/contact", (req, res) => {
   });
 });
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-app.use("/", router);
 app.listen(process.env.PORT || 5000, () => console.log("Server Running"));
