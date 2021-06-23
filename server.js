@@ -3,11 +3,14 @@ const router = express.Router();
 const cors = require("cors");
 require("dotenv").config();
 const nodemailer = require("nodemailer");
+const path = require("path");
+const favicon = require("serve-favicon");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/", router);
+app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 
 const contactEmail = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
@@ -43,7 +46,7 @@ app.post("/contact", (req, res) => {
   };
   contactEmail.sendMail(mail, (error) => {
     if (error) {
-      res.json({ status: "ERROR" });
+      res.json({ status: "ERROR on Server" });
     } else {
       res.json({ status: "Message Sent" });
     }
