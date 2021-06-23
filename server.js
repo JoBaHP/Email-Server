@@ -27,7 +27,7 @@ contactEmail.verify((error) => {
   }
 });
 app.get("/", function (req, res) {
-  res.send("hello world");
+  res.send("hi from server!");
 });
 app.post("/contact", (req, res) => {
   const name = req.body.name;
